@@ -1,6 +1,6 @@
 # cross-net
 
-`cross-net` is a cross-platform Rust library for network path introspection.
+`crossnet` is a cross-platform Rust library for network path introspection.
 
 Given a destination IP, it helps you resolve routing details such as **dev/interface**, **via/gateway**, and **src/preferred source IP** across **Linux, Windows, macOS**.  
 It also provides neighbor lookup capabilities (e.g. **IP → MAC** via ARP/NDP), making it easier to build diagnostics, observability, and network tooling in a unified way.

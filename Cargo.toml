@@ -1,12 +1,12 @@
 [package]
 name = "crossnet"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "Apache-2.0"
 description = "Libraries for handling routing and neighbors"
-homepage = "https://github.com/rikonaka/cross-net-rs"
-documentation = "https://docs.rs/cross-net"
-repository = "https://github.com/rikonaka/cross-net-rs"
+homepage = "https://github.com/rikonaka/crossnet-rs"
+documentation = "https://docs.rs/crossnet"
+repository = "https://github.com/rikonaka/crossnet-rs"
 readme = "README.md"
 keywords = ["net", "route", "neighbor"]
 

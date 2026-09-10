@@ -37,7 +37,7 @@ checksum = "f079e83a288787bcd14a6aea84cee5c87a67c5a3e660c30f557a3d24761b3527"
 
 [[package]]
 name = "crossnet"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "futures",
  "libc",
@@ -322,9 +322,9 @@ dependencies = [
 
 [[package]]
 name = "subnetwork"
-version = "0.6.14"
+version = "0.6.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6cee63b8b7bc08b75bb856ae2185fdd88210d63001298c029b0be41fc0c55f02"
+checksum = "62e2fee89e6328ac74871711a8febaf9eaf7fa136d418c92dce0079b9e574375"
 dependencies = [
  "thiserror 2.0.20",
 ]

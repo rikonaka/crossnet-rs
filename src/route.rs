@@ -159,7 +159,7 @@ impl RouteCache {
         default_route
     }
     /// Get the best route for the given destination address from the system route cache.
-    pub fn search_route(&self, dst_addr: IpAddr) -> Option<NetRoute> {
+    pub fn search_route(&self, dst_addr: &IpAddr) -> Option<NetRoute> {
         let mut best_route: Option<NetRoute> = None;
         for route in &self.0 {
             match &route.dst {
@@ -183,7 +183,7 @@ impl RouteCache {
                     }
                 }
                 Some(NetRouteAddr::IpAddr(addr)) => {
-                    if *addr == dst_addr {
+                    if addr == dst_addr {
                         best_route = Some(route.clone());
                     }
                 }
@@ -242,7 +242,7 @@ mod tests {
         dst_addrs.push(dst_addr);
 
         for dst_addr in dst_addrs {
-            let route = routes.search_route(dst_addr);
+            let route = routes.search_route(&dst_addr);
             match route {
                 Some(r) => println!("{}", r),
                 None => {

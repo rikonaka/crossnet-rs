@@ -113,6 +113,7 @@ impl PartialEq for NetRoute {
 }
 
 impl NetRoute {
+    /// Get the prefix length of the destination address if it is an IP pool.
     pub fn dst_prefix(&self) -> Option<u128> {
         match &self.dst {
             Some(NetRouteAddr::IpPool(pool)) => Some(pool.prefix()),
@@ -148,9 +149,9 @@ impl RouteCache {
                 Some(NetRouteAddr::IpPool(pool)) => {
                     if pool.contains(dst_addr) {
                         match &best_route {
-                            Some(b) => match b.dst_prefix() {
-                                Some(b_prefix) => {
-                                    if pool.prefix() > b_prefix {
+                            Some(br) => match br.dst_prefix() {
+                                Some(br_prefix) => {
+                                    if pool.prefix() > br_prefix {
                                         best_route = Some(route.clone());
                                     }
                                 }

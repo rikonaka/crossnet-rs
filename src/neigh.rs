@@ -48,9 +48,9 @@ pub struct MacInfo {
 }
 
 impl MacInfo {
-    /// On Unix-like systems, we can get the interface name directly from the neighbor cache.
+    /// On Linux and Windows, we can get the interface name from the interface index.
     #[cfg(any(target_os = "linux", target_os = "windows"))]
-    pub fn interface_name(&self) -> Result<Option<String>, CrossNetError> {
+    pub fn get_ifname(&self) -> Result<Option<String>, CrossNetError> {
         let net_ifs = get_net_ifs()?;
         if let Some(iface) = &self.ifindex {
             for net_if in &net_ifs {
@@ -60,6 +60,10 @@ impl MacInfo {
             }
         }
         Ok(None)
+    }
+    #[cfg(target_os = "macos")]
+    pub fn get_ifname(&self) -> Result<Option<String>, CrossNetError> {
+        Ok(self.ifname.clone())
     }
 }
 
@@ -128,7 +132,7 @@ mod tests {
                 Some(iface) => iface.to_string(),
                 None => "N/A".to_string(),
             };
-            let name = match mac_info.interface_name() {
+            let name = match mac_info.get_ifname() {
                 Ok(i) => match i {
                     Some(n) => n,
                     None => "N/A".to_string(),

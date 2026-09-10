@@ -146,8 +146,8 @@ impl RouteCache {
         let mut default_route: Option<NetRoute> = None;
         for route in &self.0 {
             if route.ntype == NetRouteType::Default {
-                match default_route {
-                    Some(ref mut dr) => {
+                match &mut default_route {
+                    Some(dr) => {
                         if route.metric < dr.metric {
                             *dr = route.clone();
                         }

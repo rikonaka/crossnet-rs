@@ -42,6 +42,7 @@ pub(crate) fn get_net_routes() -> Result<Vec<NetRoute>, CrossNetError> {
             let prefix_len = row.DestinationPrefix.PrefixLength;
             let prefix = &row.DestinationPrefix.Prefix;
             let next_hop = &row.NextHop;
+            let metric = row.Metric;
 
             if prefix_len == 0 {
                 let g = sockaddr_inet_to_ipaddr(next_hop)?;
@@ -56,13 +57,14 @@ pub(crate) fn get_net_routes() -> Result<Vec<NetRoute>, CrossNetError> {
                     gateway,
                     ntype: NetRouteType::Default,
                     family,
+                    metric,
                 };
                 rets.push(nr);
             } else {
-                let d = sockaddr_inet_to_ipaddr(prefix)?;
-                let g = sockaddr_inet_to_ipaddr(next_hop)?;
+                let prefix_addr = sockaddr_inet_to_ipaddr(prefix)?;
+                let net_hop_addr = sockaddr_inet_to_ipaddr(next_hop)?;
 
-                let dst = match d {
+                let dst = match prefix_addr {
                     Some(addr) => match addr {
                         IpAddr::V4(_) => {
                             if prefix_len == 32 {
@@ -83,7 +85,7 @@ pub(crate) fn get_net_routes() -> Result<Vec<NetRoute>, CrossNetError> {
                     },
                     None => None,
                 };
-                let gateway = match g {
+                let gateway = match net_hop_addr {
                     Some(addr) => Some(NetRouteAddr::IpAddr(addr)),
                     None => None,
                 };
@@ -94,6 +96,7 @@ pub(crate) fn get_net_routes() -> Result<Vec<NetRoute>, CrossNetError> {
                     gateway,
                     ntype: NetRouteType::Normal,
                     family,
+                    metric,
                 };
                 rets.push(nr);
             }

@@ -356,6 +356,10 @@ pub fn get_net_routes() -> Result<Vec<NetRoute>, CrossNetError> {
             ntype,
             family,
             ifname: r.ifname,
+            // For macOS, the metric is not directly available
+            // in the rt_msghdr structure. You may need to use
+            // other methods to retrieve the metric if needed.
+            metric: 0,
         };
         rets.push(route);
     }

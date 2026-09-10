@@ -74,6 +74,7 @@ pub struct NetRoute {
     pub gateway: Option<NetRouteAddr>,
     pub ntype: NetRouteType,
     pub family: NetFamily,
+    pub metric: u32,
     #[cfg(target_os = "macos")]
     pub ifname: Option<String>,
 }
@@ -141,6 +142,22 @@ impl fmt::Debug for RouteCache {
 }
 
 impl RouteCache {
+    pub fn get_default_route(&self) -> Option<NetRoute> {
+        let mut default_route: Option<NetRoute> = None;
+        for route in &self.0 {
+            if route.ntype == NetRouteType::Default {
+                match default_route {
+                    Some(ref mut dr) => {
+                        if route.metric < dr.metric {
+                            *dr = route.clone();
+                        }
+                    }
+                    None => default_route = Some(route.clone()),
+                }
+            }
+        }
+        default_route
+    }
     /// Get the best route for the given destination address from the system route cache.
     pub fn search_route(&self, dst_addr: IpAddr) -> Option<NetRoute> {
         let mut best_route: Option<NetRoute> = None;

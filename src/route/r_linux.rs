@@ -50,6 +50,7 @@ async fn get_route_async() -> Result<Vec<NetRoute>, CrossNetError> {
         let mut dst_addr = None;
         let mut src_addr = None;
         let mut gateway_addr = None;
+        let mut metric = 0;
 
         // println!("header: {:?}", msg.header);
         // println!("attributes: {:?}", msg.attributes);
@@ -72,6 +73,9 @@ async fn get_route_async() -> Result<Vec<NetRoute>, CrossNetError> {
 
         for ra in msg.attributes {
             match ra {
+                RouteAttribute::Priority(m) => {
+                    metric = m;
+                }
                 RouteAttribute::Destination(d) => match d {
                     RouteAddress::Inet(ipv4) => {
                         dst_addr = Some(IpAddr::V4(ipv4));
@@ -136,6 +140,7 @@ async fn get_route_async() -> Result<Vec<NetRoute>, CrossNetError> {
             gateway,
             ntype,
             family,
+            metric,
         };
         if !rets.contains(&nr) {
             rets.push(nr);

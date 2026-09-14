@@ -67,6 +67,7 @@ impl MacInfo {
     }
 }
 
+#[derive(Clone)]
 pub struct NeighborCache(HashMap<IpAddr, MacInfo>);
 
 impl fmt::Display for NeighborCache {
